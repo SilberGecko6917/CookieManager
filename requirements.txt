@@ -1,3 +1,4 @@
 cookiebot
 customtkinter
 python-dotenv
+matplotlib
