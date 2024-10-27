@@ -1,6 +1,8 @@
 import asyncio
+
+import cookie
 import customtkinter as ctk
-import cookiebot
+from cookie import CookieAPI
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
@@ -47,42 +49,37 @@ def plot_activity(activity, frame):
 
 
 def fetch_stats(stats_type: str, frame, user_id: int = None, guild_id: int = None):
-    api = cookiebot.CookieAPI()
+    api = CookieAPI()
     try:
         if stats_type == "user_stats":
-            stats = asyncio.run(api.get_user_stats(user_id=user_id))
+            stats = api.get_user_stats(user_id)
         elif stats_type == "member_stats":
-            stats = asyncio.run(api.get_member_stats(user_id=user_id, guild_id=guild_id))
+            stats = api.get_member_stats(user_id=user_id, guild_id=guild_id)
         elif stats_type == "member_activity":
-            stats = asyncio.run(api.get_member_activity(user_id=user_id, guild_id=guild_id))
+            stats = api.get_member_activity(user_id=user_id, guild_id=guild_id)
         elif stats_type == "guild_activity":
-            stats = asyncio.run(api.get_guild_activity(guild_id=guild_id))
+            stats = api.get_guild_activity(guild_id=guild_id)
         else:
             raise ValueError("Invalid stats type.")
-    except cookiebot.UserNotFound:
+    except cookie.UserNotFound:
         error_label = ctk.CTkLabel(frame, text="User not found.", font=("Helvetica", 15, "bold"), text_color="red")
         frame.after(0, error_label.pack)
-        asyncio.run(api.close())
         return
-    except cookiebot.GuildNotFound:
+    except cookie.GuildNotFound:
         error_label = ctk.CTkLabel(frame, text="Guild not found.", font=("Helvetica", 15, "bold"), text_color="red")
         frame.after(0, error_label.pack)
-        asyncio.run(api.close())
         return
-    except cookiebot.InvalidAPIKey:
+    except cookie.InvalidAPIKey:
         error_label = ctk.CTkLabel(frame, text="Invalid API key.", font=("Helvetica", 15, "bold"), text_color="red")
         frame.after(0, error_label.pack)
-        asyncio.run(api.close())
         return
-    except cookiebot.NoGuildAccess:
+    except cookie.NoGuildAccess:
         error_label = ctk.CTkLabel(frame, text="No access to guild.", font=("Helvetica", 15, "bold"), text_color="red")
         frame.after(0, error_label.pack)
-        asyncio.run(api.close())
         return
     except Exception as e:
         error_label = ctk.CTkLabel(frame, text=f"Error: {e}", font=("Helvetica", 15, "bold"), text_color="red")
         frame.after(0, error_label.pack)
-        asyncio.run(api.close())
         return
 
     def update_frame():
@@ -121,7 +118,6 @@ def fetch_stats(stats_type: str, frame, user_id: int = None, guild_id: int = Non
         stats_label.pack(expand=True, fill='both')
 
     frame.after(0, update_frame)
-    asyncio.run(api.close())
 
 
 def on_user_stats_button_click(entry, frame):
