@@ -1,0 +1,9 @@
+WINDOW_BG_COLOR = "#1E1E1E"
+FRAME_BG_COLOR = "#2E2E2E"
+BUTTON_FG_COLOR = "#3d80de"
+BUTTON_HOVER_COLOR = "#2a61af"
+TEXT_COLOR = "White"
+ERROR_TEXT_COLOR = "red"
+FONT_LARGE = ("Roboto", 24, "bold")
+FONT_MEDIUM = ("Roboto", 20, "bold")
+FONT_SMALL = ("Roboto", 15, "bold")
